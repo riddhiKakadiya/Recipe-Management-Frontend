@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+            <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <title>{% block title %}{% endblock %}</title>
+        {% block 'head' %}
+        {% endblock %}
+        <style type="text/css">
+              body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+      
+        </style>
+    </head>
+    <body>
+        <div class="navbar-fixed">
+        <nav class="blue darken-3" role="navigation">
+            <div class="nav-wrapper container">
+              <div class="show-on-large hide-on-med-and-down">
+                <a id="logo-container " href="/" class="brand-logo">Recipes App</a>
+              </div>
+            </div>
+      </nav>
+      </div>
+      <main>
+      <div class="container">
+        <br>
+        <br>
+        {% if status_code == "200"%}
+            <button class="waves-effect waves-light btn blue" id="prev">Previous</button>
+            <button class="waves-effect waves-light btn" align="right" id="next">Next</button>
+            <div id="recipes" class="divs">
+                {% for recipe in mock %}
+                    
+                    <div class="card-panel recipes" id="recipe-{{ forloop.counter }} ">
+                        <div class="row">
+                            <div class="col s12" align="center">
+                                {% if recipe.image.url != None %}
+
+                                    <img class="responsive-img" src="{{recipe.image.url}}" style="max-height: 250px;">
+                                {% else %}
+                                    <img class="responsive-img" src="https://s3.amazonaws.com/content.readymaderc.com/product_images/images/000/011/820/medium/no_img.png?1519680147" style="max-height: 250px;">
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="row">
+                            <div class="col s6">
+                                <table class="striped responsive-table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Recipe Number</td>
+                                            <td>{{ forloop.counter }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td>id</td>
+                                            <td>{{recipe.id}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>title</td>
+                                            <td>{{recipe.title}}</td>
+                                        </tr>
+                                        
+                                        
+                                        <tr>
+                                            <td>cuisine</td>
+                                            <td>{{recipe.cuisine}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>servings</td>
+                                            <td>{{recipe.servings}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>created_ts</td>
+                                            <td>{{recipe.created_ts}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>updated_ts</td>
+                                            <td>{{recipe.updated_ts}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>author_id</td>
+                                            <td>{{recipe.author_id}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col s6">
+                                <table class="striped responsive-table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>cook_time_in_min</td>
+                                            <td>{{recipe.cook_time_in_min}} mins</td>
+                                        </tr>
+                                        <tr>
+                                            <td>total_time_in_min</td>
+                                            <td>{{recipe.total_time_in_min}} mins</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ingredients</td>
+                                            <td>
+                                                {% for ingredient in recipe.ingredients %}
+
+                                                    {{ingredient}}
+                                                    <br>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>steps</td>
+                                            <td>
+                                                {% for step in recipe.steps%}
+                                                    {{step.position}} : {{step.items}}
+                                                    <br>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>nutrition_information</td>
+                                            <td>
+                                                {% for mykey,myvalue in recipe.nutrition_information.items %}
+                                                
+                                                    {{mykey}} : {{myvalue }}
+                                                    <br>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+ 
+                    </div>
+                {% endfor %}
+                
+            
+                <br>
+            </div>
+        {% elif status_code == "204" %}
+            <div id="error">
+                Request Successful. No record in database.
+            </div>
+        {% else %}
+            <div id="error">
+                No Data or No response from backend
+            </div>
+        {% endif %}
+        </div>
+        {% block 'content' %}
+        {% endblock %}
+        </main>
+        <footer class="page-footer blue">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">Recipes that will make you drool</h5>
+            </div>
+            <div class="col l3 s12">
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright blue darken-3">
+        <div class="container center-align">
+           © Cloud9 Architects
+          <br>
+          Boston, MA
+        </div>
+        </footer>
+    </body>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    {% if mock != "204" %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".divs .recipes").each(function(e) {
+                if (e != 0)
+                    $(this).hide();
+                    $("#prev").hide();
+            });
+            
+            $("#next").click(function(){
+                if ($(".divs .recipes:visible").next().next().length != 0)
+                    $(".divs .recipes:visible").next().show().prev().hide();
+                else {
+                    $(".divs .recipes:visible").hide();
+                    $(".divs .recipes:first").show();
+                }
+                if($(".divs .recipes:visible").next().next().length == 0){
+                    $("#next").hide();
+                    $("#prev").show();
+                }
+                else{
+                    $("#prev").show();
+                    $("#next").show();
+                }
+                return false;
+            });
+
+            $("#prev").click(function(){
+                if ($(".divs .recipes:visible").prev().length != 0)
+                    $(".divs .recipes:visible").prev().show().next().hide();
+                else {
+                    $(".divs .recipes:visible").hide();
+                    $(".divs .recipes:last").show();
+                }
+                if($(".divs .recipes:visible").prev().length == 1){
+                    $("#prev").show();
+                    $("#next").show();
+                }
+                else{
+                    $("#prev").hide();
+                    $("#next").show();
+                }
+                return false;
+            });
+
+            if($(".divs .recipes:visible").next().length != 1){
+                
+            }
+        });
+    </script>
+    {% endif %}
+    {% block 'scripts' %}
+    {% endblock %}
+</html>

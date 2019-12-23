@@ -1,0 +1,26 @@
+from django.urls import path, re_path
+
+from . import views
+import logging
+
+logger = logging.getLogger('__name__')
+try:
+
+    urlpatterns = [
+        re_path(r'^$', views.indexView, name='index'),
+        re_path(r'^metrics$', views.metrics, name='metrics'),
+        # re_path(r'^vi/user/?$', views.registerPage, name='registerPage'),
+        # re_path(r'^user/register/?$', views.registerPage, name='registerPage'),
+        # re_path(r'^vi/recipe/?$', views.createOrGetNotes, name='createRecipe'),
+        # re_path(r'^note/(?P<note_id>[0-9a-z-]+)$', views.noteFromId, name='noteFromId'),
+        # re_path(r'^note/(?P<note_id>[0-9a-z-]+)/attachments$', views.addAttachmentToNotes, name='addAttachmentToNotes'),
+        # re_path(r'^note/(?P<note_id>[0-9a-z-]+)/attachments/(?P<attachment_id>[0-9a-z-]+)$', views.updateOrDeleteAttachments, name='updateOrDeleteAttachments'),
+        # re_path(r'^reset/?$', views.passwordReset, name='passwordReset'),
+        # re_path(r'^.*/$', views.get404, name='get404'),
+        # re_path(r'^pingTest$', views.pingTest, name='pingTest'),
+    ]
+
+
+except Exception as e:
+    logger.debug("Something happened :\n %s", e)
+
